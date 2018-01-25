@@ -16,7 +16,7 @@ body {
 
 .login-form {
     font: 16px/2em Lato, serif;
-	margin: 100px auto;
+	margin: 20px auto;
 	max-width: 400px;
 }
 
@@ -45,8 +45,9 @@ form[role=login] {
 .form-links {
 	text-align: center;
 	margin-top: 1em;
-	margin-bottom: 50px;
+	margin-bottom: 20px;
 }
-	.form-links a {
-		color: #fff;
-	}
+
+.form-links a {
+	color: #fff;
+}
