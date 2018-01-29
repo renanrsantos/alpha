@@ -12,10 +12,10 @@
 */
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', function () {
-	    return view('welcome');
+	    return view('home');
 	});
 });
 
-Route::get('/login',function(){
-	return view('login');
-});
+Route::get('/login','Auth\LoginController@showLoginForm');
+Route::get('/logout','Auth\LoginController@logout');
+Route::post('/login','Auth\LoginController@login');
