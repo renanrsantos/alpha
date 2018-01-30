@@ -3,6 +3,7 @@ namespace App\Http\Models\Cadastros;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Http\Models\Model;
+use App\Http\Models\Estrutura\Perfilrotina;
 
 class Usuario extends Authenticatable
 {
@@ -38,5 +39,25 @@ class Usuario extends Authenticatable
     
     public function pessoa(){
         return $this->belongsTo(Pessoa::class,'idpessoa','idpessoa');
+    }
+    
+    public function perfis(){
+        return $this->hasMany(Perfilusuario::class,'idusuario');
+    }
+    
+    public function perfisToArray(){
+        $perfis = [];
+        foreach($this->perfis() as $perfil){
+            $perfis[] = $perfil->idperfil;
+        }
+        return $perfis;
+    }
+    
+    public function rotinas(){
+        $rotinas = [];
+        foreach(Perfilrotina::whereIn('idperfil',$this->perfisToArray()) as $perfilRotina){
+            $rotinas[] = $perfilRotina->rotina();
+        }
+        return $rotinas;
     }
 }
