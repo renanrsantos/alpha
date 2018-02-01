@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
+use \Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,22 +17,23 @@ class AppServiceProvider extends ServiceProvider
     public function boot(Dispatcher $events)
     {
         $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
-//            $event->menu = new \JeroenNoten\LaravelAdminLte\Menu\Builder;
-            $event->menu->add([
-                'text'=>'CADASTROS',
-                'icon'=>'globe',
-                'submenu'=>
-                    [
-                        [
-                            'text' => 'Igrejas',
-                            'url' => 'cadastros/igrejas',
-                            'icon' => 'building'
-                        ],
-                    ]
+            foreach(Auth::user()->getModulos() as $modulo){
+                $rotinas = [];
+                foreach(Auth::user()->getRotinas($modulo) as $rotina){
+                    $rotinas[] = [
+                        'text' => $rotina->rotnome,
+                        'hint' => $rotina->rotdescricao,
+                        'icon' => $rotina->roticone,
+                        'url' => $modulo->modpath.$rotina->rotpath
+                    ];
+                }
+                $event->menu->add([
+                    'text'=> $modulo->modnome,
+                    'hint'=>$modulo->moddescricao,
+                    'icon'=>$modulo->modicone,
+                    'submenu'=>$rotinas
                 ]);
-//            foreach(Auth::user()->rotinas as $rotina){
-//                
-//            }
+            }
         });
     }
 
