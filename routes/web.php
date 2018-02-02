@@ -10,12 +10,16 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::group(['middleware' => ['auth']], function () {
-    Route::get('/', function () {
+Route::get('/',function(){return view('error.cliente');});
+
+Route::group(['middleware' => ['tenant']], function () {
+    Route::group(['middleware'=>['auth']],function(){
+        Route::get('/{cliente}', function () {
 	    return view('home');
 	});
+    });
+    
+    Route::get('/{cliente}/login','Auth\LoginController@showLoginForm');
+    Route::get('/{cliente}/logout','Auth\LoginController@logout');
+    Route::post('/{cliente}/login','Auth\LoginController@login');    
 });
-
-Route::get('/login','Auth\LoginController@showLoginForm');
-Route::get('/logout','Auth\LoginController@logout');
-Route::post('/login','Auth\LoginController@login');
