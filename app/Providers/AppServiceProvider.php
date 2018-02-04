@@ -7,6 +7,7 @@ use Illuminate\Contracts\Events\Dispatcher;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use \Illuminate\Support\Facades\Auth;
 
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -24,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
                         'text' => $rotina->rotnome,
                         'hint' => $rotina->rotdescricao,
                         'icon' => $rotina->roticone,
-                        'url' => $modulo->modpath.$rotina->rotpath
+                        'url' => $this->app->request->route('cliente').$modulo->modpath.$rotina->rotpath
                     ];
                 }
                 $event->menu->add([
